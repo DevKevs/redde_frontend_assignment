@@ -7,7 +7,7 @@ import config from '../../../../public/config/config.json'
 export class ConfigService {
   private config: any;
 
-  async loadConfig(): Promise<void> {
+  async loadConfig(){
     this.config = config;
   }
 
