@@ -1,123 +1,173 @@
 <div class="content">
   <app-navbar></app-navbar>
   <main class="p-2 max-h-dvh">
-    <div class="overflow-x-auto p-6">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Job</th>
-            <th>Favorite Color</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <div class="flex items-center gap-3">
-                <div class="avatar">
-                  <div class="mask mask-squircle h-12 w-12">
-                    <img src="https://img.daisyui.com/images/profile/demo/2@94.webp"
-                      alt="Avatar Tailwind CSS Component" />
-                  </div>
-                </div>
-                <div>
-                  <div class="font-bold">Hart Hagerty</div>
-                  <div class="text-sm opacity-50">United States</div>
-                </div>
-              </div>
-            </td>
-            <td>
-              Zemlak, Daniel and Leannon
-              <br />
-              <span class="badge badge-ghost badge-sm">Desktop Support Technician</span>
-            </td>
-            <td>Purple</td>
-            <th>
-              <button class="btn btn-ghost btn-xs">details</button>
-            </th>
-          </tr>
-          <tr>
-
-            <td>
-              <div class="flex items-center gap-3">
-                <div class="avatar">
-                  <div class="mask mask-squircle h-12 w-12">
-                    <img src="https://img.daisyui.com/images/profile/demo/3@94.webp"
-                      alt="Avatar Tailwind CSS Component" />
-                  </div>
-                </div>
-                <div>
-                  <div class="font-bold">Brice Swyre</div>
-                  <div class="text-sm opacity-50">China</div>
-                </div>
-              </div>
-            </td>
-            <td>
-              Carroll Group
-              <br />
-              <span class="badge badge-ghost badge-sm">Tax Accountant</span>
-            </td>
-            <td>Red</td>
-            <th>
-              <button class="btn btn-ghost btn-xs">details</button>
-            </th>
-          </tr>
-          <tr>
-
-            <td>
-              <div class="flex items-center gap-3">
-                <div class="avatar">
-                  <div class="mask mask-squircle h-12 w-12">
-                    <img src="https://img.daisyui.com/images/profile/demo/4@94.webp"
-                      alt="Avatar Tailwind CSS Component" />
-                  </div>
-                </div>
-                <div>
-                  <div class="font-bold">Marjy Ferencz</div>
-                  <div class="text-sm opacity-50">Russia</div>
-                </div>
-              </div>
-            </td>
-            <td>
-              Rowe-Schoen
-              <br />
-              <span class="badge badge-ghost badge-sm">Office Assistant I</span>
-            </td>
-            <td>Crimson</td>
-            <th>
-              <button class="btn btn-ghost btn-xs">details</button>
-            </th>
-          </tr>
-          <tr>
-
-            <td>
-              <div class="flex items-center gap-3">
-                <div class="avatar">
-                  <div class="mask mask-squircle h-12 w-12">
-                    <img src="https://img.daisyui.com/images/profile/demo/5@94.webp"
-                      alt="Avatar Tailwind CSS Component" />
-                  </div>
-                </div>
-                <div>
-                  <div class="font-bold">Yancy Tear</div>
-                  <div class="text-sm opacity-50">Brazil</div>
-                </div>
-              </div>
-            </td>
-            <td>
-              Wyman-Ledner
-              <br />
-              <span class="badge badge-ghost badge-sm">Community Outreach Specialist</span>
-            </td>
-            <td>Indigo</td>
-            <th>
-              <button class="btn btn-ghost btn-xs">details</button>
-            </th>
-          </tr>
-        </tbody>
-      </table>
+    <div class="flex flex-between w-full items-center justify-between p-4">
+      <h1 class="text-xl font-bold">Manejo de usuarios</h1>
+      <button
+        class="btn btn-primary"
+        onclick="document.getElementById('userModal').showModal()"
+      >
+        <i class="ti ti-table-plus"></i> Nuevo usuario
+      </button>
     </div>
+    <div class="center">
+      @if (isLoading) {
+        <div class="flex">
+          <span class="loading loading-infinity loading-xl"></span>
+          <span>Cargando información por favor espere...</span>
+        </div>
+      }
+    </div>
+
+    @if (customers.length != 0 && !isLoading) {
+      <div class="overflow-x-auto p-6">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nombre completo</th>
+              <th>Documento de identidad</th>
+              <th>Correo electrónico</th>
+              <th>Fecha de nacimiento</th>
+              <th>Opciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (customer of customers; track $index) {
+            <tr>
+              <td>
+                <div class="flex items-center gap-3">
+                  <div class="avatar">
+                    <div class="mask mask-squircle h-12 w-12">
+                      <img [src]="`https://eu.ui-avatars.com/api/?background=000&color=66cc8a&name=${customer.name}&bold=true`"
+                        alt="Avatar" />
+                    </div>
+                  </div>
+                  <div>
+                    <div class="font-bold">
+                      {{ customer.name }} {{ customer.lastName }}
+                    </div>
+                    <div class="text-sm opacity-50">República Dominicana</div>
+                  </div>
+                </div>
+              </td>
+              <th>
+                {{ customer.document }}
+              </th>
+              <td>{{ customer.email }}</td>
+              <td>{{ customer.dateOfBirth.toString().substring(0, 10) }}</td>
+              <th>
+                <div class="tooltip" data-tip="Editar">
+                  <button class="btn btn-warning mr-2" (click)="selectCustomerToEdit(customer)">
+                    <i class="ti ti-edit"></i>
+                  </button>
+                </div>
+
+                <div class="tooltip" data-tip="Eliminar">
+                  <button class="btn btn-error" (click)="selectCustomerToDelete(customer)">
+                    <i class="ti ti-trash"></i>
+                  </button>
+                </div>
+              </th>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
   </main>
   <app-footer></app-footer>
 </div>
+<!-- MODALS FOR USER MANAGEMENT -->
+<dialog id="userModal" class="modal">
+  <div class="modal-box">
+    @if (isEditMode) {
+      <h3 class="font-bold text-lg mb-4">Editar Usuario</h3>
+    } @else {
+      <h3 class="font-bold text-lg mb-4">Agregar Nuevo Usuario</h3>
+    }
+
+    <form [formGroup]="userForm" (ngSubmit)="submitForm(isEditMode)" class="space-y-3">
+      <!-- Documento -->
+      <input
+        type="text"
+        placeholder="Documento"
+        class="input input-bordered w-full"
+        formControlName="document"
+        maxlength="13"
+      />
+      @if (userForm.get('document')?.touched &&
+      userForm.get('document')?.invalid) {
+      <p class="text-red-500 text-sm">Documento es requerido.</p>
+      }
+
+      <!-- Nombre -->
+      <input
+        type="text"
+        placeholder="Nombre"
+        class="input input-bordered w-full"
+        formControlName="name"
+      />
+      @if (userForm.get('name')?.touched && userForm.get('name')?.invalid) {
+      <p class="text-red-500 text-sm">Nombre es requerido.</p>
+      }
+
+      <!-- Apellido -->
+      <input
+        type="text"
+        placeholder="Apellido"
+        class="input input-bordered w-full"
+        formControlName="lastName"
+      />
+      @if (userForm.get('lastName')?.touched &&
+      userForm.get('lastName')?.invalid) {
+      <p class="text-red-500 text-sm">Apellido es requerido.</p>
+      }
+
+      <!-- Correo -->
+      <input
+        type="email"
+        placeholder="Correo"
+        class="input input-bordered w-full"
+        formControlName="email"
+      />
+      @if (userForm.get('email')?.touched &&
+      userForm.get('email')?.hasError('required')) {
+      <p class="text-red-500 text-sm">Correo es requerido.</p>
+      } @if (userForm.get('email')?.touched &&
+      userForm.get('email')?.hasError('email')) {
+      <p class="text-red-500 text-sm">Formato de correo inválido.</p>
+      }
+
+      <!-- Fecha Nacimiento -->
+      <input
+        type="date"
+        class="input input-bordered w-full"
+        formControlName="dateOfBirth"
+      />
+      @if (userForm.get('dateOfBirth')?.touched &&
+      userForm.get('dateOfBirth')?.invalid) {
+      <p class="text-red-500 text-sm">Fecha de nacimiento es requerida.</p>
+      }
+
+      <!-- Botones -->
+      <div class="modal-action">
+        <button type="button" class="btn" (click)="closeModal()">Cerrar</button>
+        <button type="submit" class="btn btn-primary">{{isEditMode ? 'Editar' : 'Guardar'}}</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<!-- DELETE DIALOG  -->
+<dialog id="delete_modal" class="modal">
+  <div class="modal-box">
+    <h3 class="text-lg font-bold">Eliminar usuario!</h3>
+    <p class="py-4">¿Estas seguro de eliminar el usuario {{selectedCustomer?.name}} {{selectedCustomer?.lastName}}?</p>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn mr-2">Cancelar</button>
+        <button class="btn btn-error" (click)="deleteCustomer()">Si, Eliminar</button>
+      </form>
+    </div>
+  </div>
+</dialog>
