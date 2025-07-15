@@ -61,7 +61,7 @@ export class Maintenance implements OnInit {
           confirmButtonText: 'Aceptar',
         })
         .then(() => {
-          this.openModal(); // 👈 aquí disparas la función al cerrar la alerta
+          this.openModal();
         });
 
       return;
