@@ -94,7 +94,12 @@ export class Maintenance implements OnInit {
     });
   }
 
-  closeModal(className: string = 'userModal') {
+  closeModal(resetData: boolean = false, className: string = 'userModal') {
+    if (resetData) {
+      this.userForm.reset();
+      this.isEditMode = false;
+      this.selectedCustomer = null;
+    }
     (document.getElementById(className) as HTMLDialogElement)?.close();
   }
 
@@ -171,7 +176,7 @@ export class Maintenance implements OnInit {
     this.customerService.deleteCustomer(this.selectedCustomer.id).subscribe({
       next: (_) => {
         this.getCustomers();
-        this.closeModal('delete_modal');
+        this.closeModal(false, 'delete_modal');
         sweetAlert.fire({
           title: 'Usuario eliminado!',
           icon: 'success',
