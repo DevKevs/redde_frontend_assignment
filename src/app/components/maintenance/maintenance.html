@@ -1,33 +1,32 @@
-<div class="content">
+<div class="flex flex-col min-h-screen">
   <app-navbar></app-navbar>
-  <main class="p-2 max-h-dvh">
-    <div class="flex flex-between w-full items-center justify-between p-4">
-      <h1 class="text-xl font-bold">Manejo de usuarios</h1>
+  <main class="flex-1 p-2 overflow-auto">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4 p-4">
+      <h1 class="text-xl font-bold text-center md:text-left">Manejo de usuarios</h1>
       <button
-        class="btn btn-primary"
+        class="btn btn-primary w-full md:w-auto"
         onclick="document.getElementById('userModal').showModal()"
       >
         <i class="ti ti-table-plus"></i> Nuevo usuario
       </button>
     </div>
-    <div class="center">
-      @if (isLoading) {
-        <div class="flex">
-          <span class="loading loading-infinity loading-xl"></span>
-          <span>Cargando información por favor espere...</span>
-        </div>
-      }
-    </div>
+
+    @if (isLoading) {
+      <div class="flex flex-col items-center justify-center gap-2 mt-10">
+        <span class="loading loading-infinity loading-xl"></span>
+        <span class="text-center">Cargando información, por favor espere...</span>
+      </div>
+    }
 
     @if (customers.length != 0 && !isLoading) {
-      <div class="overflow-x-auto p-6">
-        <table class="table">
+      <div class="overflow-x-auto p-4">
+        <table class="table table-zebra">
           <thead>
             <tr>
               <th>Nombre completo</th>
-              <th>Documento de identidad</th>
-              <th>Correo electrónico</th>
-              <th>Fecha de nacimiento</th>
+              <th>Documento</th>
+              <th>Correo</th>
+              <th>Fecha Nac.</th>
               <th>Opciones</th>
             </tr>
           </thead>
@@ -37,9 +36,11 @@
               <td>
                 <div class="flex items-center gap-3">
                   <div class="avatar">
-                    <div class="mask mask-squircle h-12 w-12">
-                      <img [src]="`https://eu.ui-avatars.com/api/?background=000&color=66cc8a&name=${customer.name}&bold=true`"
-                        alt="Avatar" />
+                    <div class="mask mask-squircle w-12 h-12">
+                      <img
+                        [src]="`https://eu.ui-avatars.com/api/?background=000&color=66cc8a&name=${customer.name}&bold=true`"
+                        alt="Avatar"
+                      />
                     </div>
                   </div>
                   <div>
@@ -50,9 +51,7 @@
                   </div>
                 </div>
               </td>
-              <th>
-                {{ customer.document }}
-              </th>
+              <td>{{ customer.document }}</td>
               <td>{{ customer.email }}</td>
               <td>{{ customer.dateOfBirth.toString().substring(0, 10) }}</td>
               <th>
